@@ -1,0 +1,25 @@
+{
+  "name": "Zenith Mind",
+  "short_name": "Zenith Mind",
+  "description": "The Operating System for Human Consciousness",
+  "start_url": "/zenith-mind/",
+  "display": "standalone",
+  "background_color": "#06060f",
+  "theme_color": "#06060f",
+  "orientation": "portrait",
+  "categories": ["health", "lifestyle", "education"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
