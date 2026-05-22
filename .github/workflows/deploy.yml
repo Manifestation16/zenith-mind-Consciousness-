@@ -2,43 +2,43 @@ name: Deploy Zenith Mind to GitHub Pages
 
 on:
   push:
-      branches: [main]
-        workflow_dispatch:
+    branches: [main]
+  workflow_dispatch:
 
-        permissions:
-          contents: read
-            pages: write
-              id-token: write
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-              concurrency:
-                group: pages
-                  cancel-in-progress: false
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
-                  jobs:
-                    deploy:
-                        environment:
-                              name: github-pages
-                                    url: ${{ steps.deployment.outputs.page_url }}
-                                        runs-on: ubuntu-latest
-                                            steps:
-                                                  - name: Checkout
-                                                          uses: actions/checkout@v4
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-                                                                - name: Inject Supabase credentials
-                                                                        run: |
-                                                                                  sed -i "s|YOUR_SUPABASE_URL|${{ secrets.SUPABASE_URL }}|g" index.html
-                                                                                            sed -i "s|YOUR_SUPABASE_ANON_KEY|${{ secrets.SUPABASE_ANON_KEY }}|g" index.html
-                                                                                                      sed -i "s|YOUR_STRIPE_TRANSCENDENCE_LINK|${{ secrets.STRIPE_TRANSCENDENCE_LINK }}|g" index.html
-                                                                                                                sed -i "s|YOUR_STRIPE_ILLUMINATION_LINK|${{ secrets.STRIPE_ILLUMINATION_LINK }}|g" index.html
-                                                                                                                
-                                                                                                                      - name: Setup Pages
-                                                                                                                              uses: actions/configure-pages@v5
-                                                                                                                              
-                                                                                                                                    - name: Upload artifact
-                                                                                                                                            uses: actions/upload-pages-artifact@v3
-                                                                                                                                                    with:
-                                                                                                                                                              path: '.'
-                                                                                                                                                              
-                                                                                                                                                                    - name: Deploy to GitHub Pages
-                                                                                                                                                                            id: deployment
-                                                                                                                                                                                    uses: actions/deploy-pages@v4
+      - name: Inject Supabase credentials
+        run: |
+          sed -i "s|YOUR_SUPABASE_URL|${{ secrets.SUPABASE_URL }}|g" index.html
+          sed -i "s|YOUR_SUPABASE_ANON_KEY|${{ secrets.SUPABASE_ANON_KEY }}|g" index.html
+          sed -i "s|YOUR_STRIPE_TRANSCENDENCE_LINK|${{ secrets.STRIPE_TRANSCENDENCE_LINK }}|g" index.html
+          sed -i "s|YOUR_STRIPE_ILLUMINATION_LINK|${{ secrets.STRIPE_ILLUMINATION_LINK }}|g" index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
