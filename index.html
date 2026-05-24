@@ -1027,7 +1027,7 @@ function showToast(msg) { const t = document.getElementById('toast'); t.textCont
 // ══════════════════════════════════════
 const ELEVENLABS_API_KEY = 'YOUR_ELEVENLABS_API_KEY'; // ← Add your key here
 const ELEVENLABS_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';  // "Sarah" — calm, meditative
-const USE_ELEVENLABS = ELEVENLABS_API_KEY !== 'YOUR_ELEVENLABS_API_KEY';
+const USE_ELEVENLABS = ELEVENLABS_API_KEY.startsWith('sk_');
 
 // ══════════════════════════════════════
 // ZENITH AUDIO (minimal — bell only)
@@ -1491,3 +1491,4 @@ openMedPlayer = function(id) {
 </script>
 </body>
 </html>
+            
