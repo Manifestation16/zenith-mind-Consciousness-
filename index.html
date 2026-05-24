@@ -1063,30 +1063,30 @@ const ZA = new ZenithAudioEngine();
 // AMBIENT SOUND LIBRARY (ElevenLabs)
 // ══════════════════════════════════════
 const AMBIENT_SOUNDS = [
-  { id:'rain',      icon:'🌧️', name:'Gentle Rain',      mood:'Calm · Stress Relief',   filter:['all','calm'],
-    prompt:'Soft gentle rain falling on leaves and a window, peaceful ambient rainfall, continuous soothing rain drops, no thunder, no music, only soft rain' },
-  { id:'forest',    icon:'🌲', name:'Forest Morning',    mood:'Nature · Grounding',      filter:['all','nature'],
-    prompt:'Peaceful morning forest ambience, birds chirping softly in the trees, gentle wind through leaves, calming woodland sounds, no human sounds' },
-  { id:'fireplace', icon:'🔥', name:'Fireplace',         mood:'Comfort · Warmth',        filter:['all','calm'],
-    prompt:'Cozy warm crackling fireplace, wood burning and gently popping, soft fire ambience, indoor winter comfort, no music' },
-  { id:'ocean',     icon:'🌊', name:'Ocean Waves',       mood:'Peace · Anxiety Relief',  filter:['all','calm'],
-    prompt:'Calm gentle ocean waves washing rhythmically on a sandy shore, peaceful sea sounds, soft coastal ambience, continuous and soothing' },
-  { id:'bowls',     icon:'✨', name:'Healing Bowls',     mood:'Healing · Meditation',    filter:['all','heal'],
-    prompt:'Deep resonating Tibetan singing bowls, harmonic healing tones, spiritual meditation sounds, slow and continuous bowl ring, no music' },
-  { id:'night',     icon:'🌙', name:'Night Crickets',    mood:'Sleep · Deep Rest',       filter:['all','sleep'],
-    prompt:'Peaceful quiet night ambience, crickets chirping softly and continuously, gentle nocturnal insect sounds, calm summer night, sleepy and relaxing' },
-  { id:'stream',    icon:'💧', name:'Mountain Stream',   mood:'Focus · Mental Clarity',  filter:['all','focus'],
-    prompt:'Gentle clear mountain stream babbling and flowing over smooth rocks, peaceful flowing water, soft river ambience, continuous and calming' },
-  { id:'storm',     icon:'⛈️', name:'Thunder Storm',    mood:'Power · Energize',        filter:['all','focus'],
-    prompt:'Heavy steady rain with occasional distant rolling thunder, dramatic storm ambience, powerful yet calming, no lightning crack, only rain and deep thunder' },
-  { id:'wind',      icon:'🎋', name:'Wind Chimes',       mood:'Meditate · Peace',        filter:['all','heal'],
-    prompt:'Delicate wind chimes ringing gently in a soft breeze, peaceful garden bell tones, meditative and calming, continuous gentle chime sounds' },
-  { id:'spring',    icon:'🌸', name:'Spring Garden',     mood:'Joy · Uplift',            filter:['all','nature'],
-    prompt:'Spring garden morning with birds singing cheerfully, light warm breeze, flowers and fresh outdoor air, uplifting and joyful nature sounds' },
-  { id:'delta',     icon:'🌑', name:'Deep Sleep Drone',  mood:'Sleep · Delta Waves',     filter:['all','sleep'],
-    prompt:'Very deep low frequency humming drone sound, slow sub-bass meditation tone, sleep inducing sound, continuous and very calming, no melody' },
-  { id:'crystal',   icon:'💎', name:'Crystal Bowls',     mood:'Healing · Clarity',       filter:['all','heal'],
-    prompt:'Crystal singing bowls ringing in clear high tones, bright healing frequencies, spiritual sound healing, continuous resonance and gentle ring' },
+  { id:'rain',      icon:'🌧️', name:'Midnight Rain',       mood:'Calm · Stress Relief',    filter:['all','calm'],
+    prompt:'Extremely soft and slow rainfall at midnight on a still lake surface. Each raindrop landing with a delicate ripple. No wind, no thunder, no traffic. Pure silence beneath the rain. Very hushed, very slow, deeply meditative. Luxury zen rainfall ambience with long pauses between drops. Barely audible, sacred stillness.' },
+  { id:'coast',     icon:'🌊', name:'Coastal Dusk',         mood:'Peace · Anxiety Relief',   filter:['all','calm'],
+    prompt:'Gentle waves washing very slowly onto smooth warm pebbles at a quiet Mediterranean coast at dusk. Each wave long and unhurried, retreating softly with a whisper. No seagulls, no wind, no voices. Just the slow breath of a calm sea touching the shore. Silky, continuous, deeply peaceful luxury coastal ambience.' },
+  { id:'fireplace', icon:'🔥', name:'Hearth Glow',           mood:'Comfort · Warmth',         filter:['all','calm'],
+    prompt:'A slow deep crackling fireplace in a luxury mountain chalet. Rich aged hardwood burning quietly. Occasional soft ember pop. Very low and warm acoustic. No music, no voices, no external sounds. Intimate interior warmth. The fire breathes slowly, steadily. Premium five-star fireplace ambience, deeply comforting and meditative.' },
+  { id:'night',     icon:'🌙', name:'Temple Night',           mood:'Sleep · Deep Rest',        filter:['all','sleep'],
+    prompt:'A silent Zen Buddhist temple garden deep at night. A few distant crickets very far away, barely audible. An occasional frog near a still reflecting pond. Bamboo leaves brushed once by a faint breeze then silence. Complete absolute tranquility. Japanese monastery at 2am. No city sounds. Only sacred nocturnal silence and the softest of life.' },
+  { id:'thunder',   icon:'⛈️', name:'Velvet Thunder',        mood:'Grounding · Power',        filter:['all','nature'],
+    prompt:'Slow steady soft rain with very deep distant rolling thunder far away over mountains. The thunder never cracks or startles. It rolls slowly and deeply like a bass note of the earth. Rain is gentle and consistent. No wind. Only soft rainfall and the occasional slow deep rumble from the horizon. Cinematic, calming, profound.' },
+  { id:'airplane',  icon:'✈️', name:'First Class Altitude',  mood:'Focus · Flow State',       filter:['all','focus'],
+    prompt:'The deep smooth continuous hum of a luxury airliner at 38000 feet cruising altitude. Low frequency cabin rumble, constant and perfectly steady. No turbulence, no announcements, no conversation. Just the enveloping drone of premium cabin white noise. Like sleeping in first class above the clouds. Deep, steady, and utterly peaceful.' },
+  { id:'city',      icon:'🌃', name:'Penthouse After Midnight', mood:'Urban Calm · Solitude', filter:['all','calm'],
+    prompt:'The view from a silent high-rise penthouse at 3am. Far below, the city breathes very faintly. A distant car passing slowly many floors below. The low collective hum of a sleeping metropolis. No voices, no music, no sirens. Urban solitude at altitude. The city as a distant lullaby heard through thick soundproof glass. Deeply contemplative.' },
+  { id:'stream',    icon:'💧', name:'Sacred Spring',           mood:'Focus · Mental Clarity',  filter:['all','focus'],
+    prompt:'A very gentle sacred mountain spring trickling slowly over ancient moss-covered stones in a silent pine forest. Crystal clear cold water moving with patience and grace. No rushing, no rapids. Just a soft unhurried continuous trickle. Occasional drip from a stone. Absolute forest silence around it. Pure, clarifying, and deeply meditative water sound.' },
+  { id:'bowls',     icon:'✨', name:'Tibetan Alchemy',         mood:'Healing · Meditation',    filter:['all','heal'],
+    prompt:'Large ancient Tibetan singing bowls struck very slowly in a stone meditation chamber. Each bowl rings out fully and fades into silence before the next tone begins. Deep harmonic resonance, rich overtones. Very low frequency base tones. Spiritual sound healing. No music, no chanting. Only pure sacred bowl vibration and long resonant decay in stillness.' },
+  { id:'forest',    icon:'🌿', name:'Rainforest Sanctuary',    mood:'Nature · Grounding',      filter:['all','nature'],
+    prompt:'Ancient equatorial rainforest at dawn. Enormous canopy of leaves dripping slowly with morning dew. A single exotic bird call very far in the distance. Morning mist moving through the trees. The feeling of being inside the lungs of the earth. No insects close by. Only deep green acoustic depth. Primordial, grounding, sacred natural silence.' },
+  { id:'delta',     icon:'🌑', name:'Deep Space Drift',        mood:'Sleep · Delta Waves',     filter:['all','sleep'],
+    prompt:'An ultra-deep continuous sub-bass drone at a very low frequency near 40Hz. Pulsing imperceptibly slowly. Like the resonance of deep space. Felt more than heard. Complete tonal darkness and gravitational depth. Sleep induction frequency, delta wave range. No melody, no rhythm, only an infinite slow vibration like the hum of the universe itself.' },
+  { id:'crystal',   icon:'💎', name:'Crystal Resonance',       mood:'Healing · Clarity',       filter:['all','heal'],
+    prompt:'Pure quartz crystal singing bowls played with perfect precision in an acoustically perfect meditation room. Very high clear tones ringing out in complete silence. Each note crystalline and bright, fading slowly into pure stillness. Sacred geometry frequency. No reverb added, no music. Only the immaculate high-frequency resonance of pure crystal vibration and silence.' },
 ];
 
 // ══════════════════════════════════════
@@ -1100,7 +1100,7 @@ class SoundEngine {
     const res = await fetch('https://api.elevenlabs.io/v1/sound-generation', {
       method: 'POST',
       headers: { 'xi-api-key': ELEVENLABS_API_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: sound.prompt, duration_seconds: 22, prompt_influence: 0.3 })
+      body: JSON.stringify({ text: sound.prompt, duration_seconds: 22, prompt_influence: 0.7 })
     });
     if (!res.ok) throw new Error('ElevenLabs sound-generation error: ' + res.status);
     const blob = await res.blob();
@@ -1386,7 +1386,7 @@ setInterval(() => {
 }, 2000);
 
 // ── WIRE AUDIO INTO SLEEP PLAYER ──
-const SLEEP_SOUND_MAP = { deep:'delta', nap:'night', jetlag:'ocean', burnout:'rain' };
+const SLEEP_SOUND_MAP = { deep:'delta', nap:'night', jetlag:'coast', burnout:'rain' };
 const _origStartSleepPlayback = startSleepPlayback;
 startSleepPlayback = async function() {
   _origStartSleepPlayback();
@@ -1427,68 +1427,4 @@ const STRIPE_LINKS = {
 function handleUpgrade(tier) {
   const link = STRIPE_LINKS[tier];
   if (!link || link.startsWith('YOUR_')) {
-    const email = currentUser ? currentUser.email : prompt('Enter your email for early access:');
-    if (email && USE_SUPABASE && sb) {
-      sb.from('waitlist').insert({email, tier, created_at: new Date().toISOString()})
-        .then(() => showToast('You\'re on the waitlist! We\'ll email you. ✦'));
-    } else if (email) {
-      showToast('Added to waitlist — launching soon!');
-    }
-    return;
-  }
-  const url = currentUser ? link + '?prefilled_email=' + encodeURIComponent(currentUser.email) : link;
-  window.open(url, '_blank');
-}
-
-// ══════════════════════════════════════
-// PREMIUM CONTENT GATE
-// ══════════════════════════════════════
-const FREE_MEDITATIONS = ['neural', 'ceo'];
-
-function isPremium(contentId) {
-  if (!currentUser) return false;
-  if (currentUser.tier && currentUser.tier !== 'free') return true;
-  return FREE_MEDITATIONS.includes(contentId);
-}
-
-const _originalOpenMedPlayer = openMedPlayer;
-openMedPlayer = function(id) {
-  if (!isPremium(id)) {
-    showToast('Unlock with Transcendence — upgrade below ✦');
-    setTimeout(() => document.getElementById('premium').scrollIntoView({behavior: 'smooth'}), 700);
-    return;
-  }
-  _originalOpenMedPlayer(id);
-};
-
-// ══════════════════════════════════════
-// INIT
-// ══════════════════════════════════════
-(async function init() {
-  if (USE_SUPABASE && sb) {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session?.user) currentUser = {
-      id: session.user.id,
-      email: session.user.email,
-      name: session.user.user_metadata?.name || session.user.email.split('@')[0]
-    };
-    sb.auth.onAuthStateChange((event, session) => {
-      if (session?.user) currentUser = {
-        id: session.user.id,
-        email: session.user.email,
-        name: session.user.user_metadata?.name || session.user.email.split('@')[0]
-      };
-      else currentUser = null;
-      updateNav(); renderHistory(); updateStats();
-    });
-  } else {
-    currentUser = store.getSession();
-  }
-  updateNav(); renderMedGrid(); renderSleepGrid(); renderHistory(); updateStats();
-  renderSoundGrid();
-  setTimeout(addAudioBadgesToMedCards, 150);
-})();
-</script>
-</body>
-</html>
-            
+    co
