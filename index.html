@@ -270,8 +270,40 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:300;letter-spacin
 .volume-row label{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
 input[type=range].volume-slider{-webkit-appearance:none;appearance:none;height:2px;background:var(--glass-border);border-radius:2px;outline:none;flex:1;cursor:pointer}
 input[type=range].volume-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--cyan);cursor:pointer}
-.headphones-note{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;color:var(--text-muted);text-align:center;padding:4px 0 10px;opacity:.7}
-.headphones-note::before{content:'🎧  '}
+.headphones-note{display:none}
+/* ══ SOUND SANCTUARY ══ */
+.sound-tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:36px}
+.sound-tab{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;padding:9px 22px;border:1px solid var(--glass-border);border-radius:100px;background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .3s}
+.sound-tab.active,.sound-tab:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.08)}
+.sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;margin-bottom:28px}
+.sound-card{padding:28px 18px 22px;cursor:pointer;transition:all .35s;text-align:center;position:relative;overflow:hidden}
+.sound-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.sound-card.active{border-color:var(--cyan) !important;box-shadow:0 0 32px rgba(74,227,209,.2) !important}
+.sound-card.loading{border-color:var(--gold) !important;animation:soundPulse 1.4s ease-in-out infinite}
+@keyframes soundPulse{0%,100%{opacity:.65}50%{opacity:1}}
+.sound-card-icon{font-size:2.4rem;margin-bottom:14px;display:block;line-height:1}
+.sound-card-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;color:var(--text-primary);margin-bottom:4px;letter-spacing:.04em}
+.sound-card-mood{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.sound-card-status{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);transition:color .3s}
+.sound-card.active .sound-card-status{color:var(--cyan)}
+.sound-card.loading .sound-card-status{color:var(--gold)}
+.sc-waves{display:flex;gap:3px;justify-content:center;align-items:flex-end;height:18px;margin-top:10px;opacity:0;transition:opacity .4s}
+.sound-card.active .sc-waves{opacity:1}
+.sc-waves span{display:inline-block;width:3px;border-radius:2px;background:var(--cyan);animation:waveUp 1s ease-in-out infinite}
+.sc-waves span:nth-child(1){animation-delay:0s}.sc-waves span:nth-child(2){animation-delay:.12s}.sc-waves span:nth-child(3){animation-delay:.24s}.sc-waves span:nth-child(4){animation-delay:.1s}.sc-waves span:nth-child(5){animation-delay:.2s}
+@keyframes waveUp{0%,100%{height:3px}50%{height:15px}}
+.sound-now-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(6,6,15,.97);backdrop-filter:blur(40px) saturate(1.5);border-top:1px solid var(--glass-border);padding:14px clamp(14px,4vw,48px);display:none;align-items:center;gap:14px}
+.sound-now-bar.show{display:flex}
+.sound-now-icon{font-size:1.6rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:50%;flex-shrink:0}
+.sound-now-info{flex:1;min-width:0}
+.sound-now-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:400;color:var(--text-primary);line-height:1.2}
+.sound-now-status{font-family:'DM Mono',monospace;font-size:.57rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-top:2px}
+.sound-bar-waves{display:flex;gap:3px;align-items:flex-end;height:22px;flex-shrink:0}
+.sound-bar-waves span{display:inline-block;width:3px;border-radius:2px;background:var(--cyan);animation:waveUp 1s ease-in-out infinite}
+.sound-bar-waves span:nth-child(1){animation-delay:0s}.sound-bar-waves span:nth-child(2){animation-delay:.18s}.sound-bar-waves span:nth-child(3){animation-delay:.06s}.sound-bar-waves span:nth-child(4){animation-delay:.24s}.sound-bar-waves span:nth-child(5){animation-delay:.12s}
+.sound-stop-btn{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;border:1px solid var(--glass-border);color:var(--text-muted);border-radius:100px;background:transparent;cursor:pointer;transition:all .3s;flex-shrink:0}
+.sound-stop-btn:hover{border-color:var(--red);color:var(--red)}
+@media(max-width:600px){.sound-bar-waves{display:none}}
 .narration-panel{padding:0 20px 16px;min-height:40px}
 .narration-text{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text-secondary);text-align:center;line-height:1.65;opacity:0;transform:translateY(6px);transition:opacity .9s ease,transform .9s ease}
 .narration-text.visible{opacity:1;transform:translateY(0)}
@@ -356,7 +388,7 @@ input[type=range].volume-slider::-webkit-slider-thumb{-webkit-appearance:none;wi
 <nav class="nav" id="mainNav">
 <div class="nav-brand" onclick="scrollTo({top:0,behavior:'smooth'})">Zenith Mind</div>
 <div class="nav-links">
-<a href="#breathwork">Breathe</a><a href="#meditate">Meditate</a><a href="#sleep">Sleep</a><a href="#analytics">Progress</a><a href="#journal">Journal</a>
+<a href="#sounds">Sounds</a><a href="#breathwork">Breathe</a><a href="#meditate">Meditate</a><a href="#sleep">Sleep</a><a href="#analytics">Progress</a><a href="#journal">Journal</a>
 <div class="nav-user" id="navUser" style="display:none"><span style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-secondary)" id="navUserName"></span><div class="nav-avatar" id="navAvatar"></div><button class="nav-logout" onclick="logout()">Sign Out</button></div>
 <button class="nav-login-btn" id="navLoginBtn" onclick="openAuth('login')">Sign In</button>
 </div>
@@ -385,6 +417,43 @@ input[type=range].volume-slider::-webkit-slider-thumb{-webkit-appearance:none;wi
 </div>
 <div class="mood-response" id="moodResponse"><div class="divider" style="margin-bottom:20px"></div><p id="moodText"></p></div>
 </section>
+
+<!-- ══ SOUND SANCTUARY ══ -->
+<section class="section" id="sounds">
+<div class="section-header reveal">
+  <div class="label">ElevenLabs AI · Sound Sanctuary</div>
+  <h2>Choose Your <span class="accent-text">Soundscape</span></h2>
+  <p>AI-generated ambient sounds — crafted in real time by ElevenLabs. Select by mood for instant calm, focus, or sleep.</p>
+</div>
+<div class="sound-tabs reveal">
+  <button class="sound-tab active" data-filter="all" onclick="filterSounds(this)">All Sounds</button>
+  <button class="sound-tab" data-filter="calm" onclick="filterSounds(this)">😌 Calm</button>
+  <button class="sound-tab" data-filter="sleep" onclick="filterSounds(this)">🌙 Sleep</button>
+  <button class="sound-tab" data-filter="focus" onclick="filterSounds(this)">🎯 Focus</button>
+  <button class="sound-tab" data-filter="heal" onclick="filterSounds(this)">✨ Heal</button>
+  <button class="sound-tab" data-filter="nature" onclick="filterSounds(this)">🌿 Nature</button>
+</div>
+<div class="sound-grid" id="soundGrid"></div>
+<div class="reveal" style="display:flex;align-items:center;gap:14px;justify-content:center;margin-top:4px">
+  <span class="label">Volume</span>
+  <input type="range" class="volume-slider" min="0" max="1" step="0.05" value="0.85" oninput="SE.setVolume(parseFloat(this.value))" style="width:180px">
+</div>
+</section>
+
+<!-- ══ SOUND NOW PLAYING BAR ══ -->
+<div class="sound-now-bar" id="soundNowBar">
+  <div class="sound-now-icon" id="soundNowIcon">🎵</div>
+  <div class="sound-now-info">
+    <div class="sound-now-name" id="soundNowName">—</div>
+    <div class="sound-now-status" id="soundNowStatus">Generating soundscape...</div>
+  </div>
+  <div class="sound-bar-waves"><span></span><span></span><span></span><span></span><span></span></div>
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+    <span class="label" style="white-space:nowrap">Vol</span>
+    <input type="range" class="volume-slider" min="0" max="1" step="0.05" value="0.85" oninput="SE.setVolume(parseFloat(this.value))" style="width:90px">
+  </div>
+  <button class="sound-stop-btn" onclick="SE.stop()">■ Stop</button>
+</div>
 
 <section class="section" id="breathwork">
 <div class="section-header reveal"><div class="label">Breathwork System</div><h2>Master Your <span class="accent-text">Breath</span></h2><p>Science-backed breathing patterns to regulate your nervous system in real time.</p></div>
@@ -961,161 +1030,187 @@ const ELEVENLABS_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';  // "Sarah" — calm, medita
 const USE_ELEVENLABS = ELEVENLABS_API_KEY !== 'YOUR_ELEVENLABS_API_KEY';
 
 // ══════════════════════════════════════
-// ZENITH AUDIO ENGINE
+// ZENITH AUDIO (minimal — bell only)
 // ══════════════════════════════════════
 class ZenithAudioEngine {
-  constructor() {
-    this.ctx = null; this.masterGain = null; this.analyser = null;
-    this.leftOsc = null; this.rightOsc = null; this.noiseSource = null;
-    this.droneOsc = null; this.droneLfo = null; this.droneGainNode = null;
-    this.vizBars = []; this.vizFrame = null; this.ready = false;
-  }
-
+  constructor() { this.ctx = null; this.masterGain = null; this.ready = false; this.vizFrame = null; }
   async init() {
     if (this.ready) { await this.ctx.resume(); return; }
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    this.masterGain = this.ctx.createGain();
-    this.masterGain.gain.value = 0.7;
-    this.analyser = this.ctx.createAnalyser();
-    this.analyser.fftSize = 64;
-    this.analyser.connect(this.masterGain);
-    this.masterGain.connect(this.ctx.destination);
-    this.ready = true;
+    this.masterGain = this.ctx.createGain(); this.masterGain.gain.value = 0.7;
+    this.masterGain.connect(this.ctx.destination); this.ready = true;
   }
-
-  setVolume(v) {
-    if (!this.masterGain) return;
-    this.masterGain.gain.linearRampToValueAtTime(Math.max(0, Math.min(1, v)), this.ctx.currentTime + 0.1);
-  }
-
-  /* ── BINAURAL BEATS ── */
-  startBinaural(baseFreq, beatFreq, vol = 0.28) {
-    this.stopBinaural();
-    const merger = this.ctx.createChannelMerger(2);
-    merger.connect(this.analyser);
-
-    const makeOsc = (freq, ch) => {
-      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
-      o.type = 'sine'; o.frequency.value = freq;
-      g.gain.setValueAtTime(0, this.ctx.currentTime);
-      g.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + 3);
-      o.connect(g); g.connect(merger, 0, ch); o.start(); return o;
-    };
-    this.leftOsc  = makeOsc(baseFreq, 0);
-    this.rightOsc = makeOsc(baseFreq + beatFreq, 1);
-  }
-
-  stopBinaural() {
-    [this.leftOsc, this.rightOsc].forEach(o => { try { o?.stop() } catch(e){} });
-    this.leftOsc = this.rightOsc = null;
-  }
-
-  /* ── BROWN NOISE ── */
-  _buildNoiseBuffer(type) {
-    const sr = this.ctx.sampleRate, buf = this.ctx.createBuffer(2, sr * 4, sr);
-    for (let ch = 0; ch < 2; ch++) {
-      const d = buf.getChannelData(ch);
-      if (type === 'brown') {
-        let last = 0;
-        for (let i = 0; i < d.length; i++) {
-          const w = Math.random() * 2 - 1;
-          d[i] = (last + 0.02 * w) / 1.02 * 3.5; last = d[i];
-        }
-      } else { // pink
-        let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
-        for (let i = 0; i < d.length; i++) {
-          const w = Math.random() * 2 - 1;
-          b0=.99886*b0+w*.0555179; b1=.99332*b1+w*.0750759;
-          b2=.96900*b2+w*.1538520; b3=.86650*b3+w*.3104856;
-          b4=.55000*b4+w*.5329522; b5=-.7616*b5-w*.0168980;
-          d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11; b6=w*.115926;
-        }
-      }
-    }
-    return buf;
-  }
-
-  startNoise(type = 'brown', vol = 0.15) {
-    this.stopNoise();
-    this.noiseSource = this.ctx.createBufferSource();
-    this.noiseSource.buffer = this._buildNoiseBuffer(type);
-    this.noiseSource.loop = true;
-    const g = this.ctx.createGain();
-    g.gain.setValueAtTime(0, this.ctx.currentTime);
-    g.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + 2.5);
-    this.noiseSource.connect(g); g.connect(this.analyser);
-    this.noiseSource.start();
-  }
-
-  stopNoise() { try { this.noiseSource?.stop() } catch(e){} this.noiseSource = null; }
-
-  /* ── DRONE TONE ── */
-  startDrone(freq, vol = 0.07) {
-    this.stopDrone();
-    const lfo = this.ctx.createOscillator(), lfoG = this.ctx.createGain();
-    lfo.frequency.value = 0.25; lfoG.gain.value = 1.5;
-    lfo.connect(lfoG);
-
-    const osc = this.ctx.createOscillator(), g = this.ctx.createGain();
-    osc.type = 'triangle'; osc.frequency.value = freq;
-    lfoG.connect(osc.frequency);
-    g.gain.setValueAtTime(0, this.ctx.currentTime);
-    g.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + 4);
-    osc.connect(g); g.connect(this.analyser);
-    lfo.start(); osc.start();
-    this.droneOsc = osc; this.droneLfo = lfo; this.droneGainNode = g;
-  }
-
-  stopDrone() {
-    if (this.droneGainNode) {
-      try { this.droneGainNode.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 1.5); } catch(e){}
-    }
-    const o = this.droneOsc, l = this.droneLfo;
-    setTimeout(() => { try { o?.stop(); l?.stop(); } catch(e){} }, 1600);
-    this.droneOsc = this.droneLfo = this.droneGainNode = null;
-  }
-
-  /* ── SINGING BOWL BELL ── */
+  setVolume(v) { if (this.masterGain) this.masterGain.gain.value = Math.max(0, Math.min(1, v)); }
+  startBinaural() {} stopBinaural() {}
+  startNoise() {} stopNoise() {}
+  startDrone() {} stopDrone() {}
+  startViz() {} stopViz() { if (this.vizFrame) cancelAnimationFrame(this.vizFrame); }
   playBell(freq = 528) {
     if (!this.ready) return;
     const now = this.ctx.currentTime;
-    [[freq, 0.4, 2.2], [freq * 2.756, 0.18, 1.4], [freq * 5.41, 0.08, 0.9]].forEach(([f, amp, dur]) => {
+    [[freq,.35,2.2],[freq*2.756,.15,1.4],[freq*5.41,.06,.9]].forEach(([f,amp,dur]) => {
       const o = this.ctx.createOscillator(), g = this.ctx.createGain();
-      o.type = 'sine'; o.frequency.value = f;
-      g.gain.setValueAtTime(amp, now);
-      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-      o.connect(g); g.connect(this.masterGain);
-      o.start(now); o.stop(now + dur);
+      o.type='sine'; o.frequency.value=f;
+      g.gain.setValueAtTime(amp, now); g.gain.exponentialRampToValueAtTime(0.0001, now+dur);
+      o.connect(g); g.connect(this.masterGain); o.start(now); o.stop(now+dur);
     });
   }
-
-  /* ── VISUALIZER ── */
-  startViz(containerId) {
-    const el = document.getElementById(containerId); if (!el) return;
-    el.innerHTML = '';
-    this.vizBars = Array.from({length: 12}, () => {
-      const b = document.createElement('div'); b.className = 'audio-bar';
-      b.style.height = '3px'; el.appendChild(b); return b;
-    });
-    const data = new Uint8Array(this.analyser.frequencyBinCount);
-    const tick = () => {
-      this.vizFrame = requestAnimationFrame(tick);
-      this.analyser.getByteFrequencyData(data);
-      this.vizBars.forEach((b, i) => {
-        const v = (data[i * 2] || 0) / 255;
-        b.style.height = Math.max(3, v * 20) + 'px';
-        b.style.opacity = 0.4 + v * 0.6;
-      });
-    };
-    tick();
-  }
-
-  stopViz() { if (this.vizFrame) cancelAnimationFrame(this.vizFrame); this.vizFrame = null; }
-
   stopAll() { this.stopBinaural(); this.stopNoise(); this.stopDrone(); this.stopViz(); }
 }
-
 const ZA = new ZenithAudioEngine();
+
+// ══════════════════════════════════════
+// AMBIENT SOUND LIBRARY (ElevenLabs)
+// ══════════════════════════════════════
+const AMBIENT_SOUNDS = [
+  { id:'rain',      icon:'🌧️', name:'Gentle Rain',      mood:'Calm · Stress Relief',   filter:['all','calm'],
+    prompt:'Soft gentle rain falling on leaves and a window, peaceful ambient rainfall, continuous soothing rain drops, no thunder, no music, only soft rain' },
+  { id:'forest',    icon:'🌲', name:'Forest Morning',    mood:'Nature · Grounding',      filter:['all','nature'],
+    prompt:'Peaceful morning forest ambience, birds chirping softly in the trees, gentle wind through leaves, calming woodland sounds, no human sounds' },
+  { id:'fireplace', icon:'🔥', name:'Fireplace',         mood:'Comfort · Warmth',        filter:['all','calm'],
+    prompt:'Cozy warm crackling fireplace, wood burning and gently popping, soft fire ambience, indoor winter comfort, no music' },
+  { id:'ocean',     icon:'🌊', name:'Ocean Waves',       mood:'Peace · Anxiety Relief',  filter:['all','calm'],
+    prompt:'Calm gentle ocean waves washing rhythmically on a sandy shore, peaceful sea sounds, soft coastal ambience, continuous and soothing' },
+  { id:'bowls',     icon:'✨', name:'Healing Bowls',     mood:'Healing · Meditation',    filter:['all','heal'],
+    prompt:'Deep resonating Tibetan singing bowls, harmonic healing tones, spiritual meditation sounds, slow and continuous bowl ring, no music' },
+  { id:'night',     icon:'🌙', name:'Night Crickets',    mood:'Sleep · Deep Rest',       filter:['all','sleep'],
+    prompt:'Peaceful quiet night ambience, crickets chirping softly and continuously, gentle nocturnal insect sounds, calm summer night, sleepy and relaxing' },
+  { id:'stream',    icon:'💧', name:'Mountain Stream',   mood:'Focus · Mental Clarity',  filter:['all','focus'],
+    prompt:'Gentle clear mountain stream babbling and flowing over smooth rocks, peaceful flowing water, soft river ambience, continuous and calming' },
+  { id:'storm',     icon:'⛈️', name:'Thunder Storm',    mood:'Power · Energize',        filter:['all','focus'],
+    prompt:'Heavy steady rain with occasional distant rolling thunder, dramatic storm ambience, powerful yet calming, no lightning crack, only rain and deep thunder' },
+  { id:'wind',      icon:'🎋', name:'Wind Chimes',       mood:'Meditate · Peace',        filter:['all','heal'],
+    prompt:'Delicate wind chimes ringing gently in a soft breeze, peaceful garden bell tones, meditative and calming, continuous gentle chime sounds' },
+  { id:'spring',    icon:'🌸', name:'Spring Garden',     mood:'Joy · Uplift',            filter:['all','nature'],
+    prompt:'Spring garden morning with birds singing cheerfully, light warm breeze, flowers and fresh outdoor air, uplifting and joyful nature sounds' },
+  { id:'delta',     icon:'🌑', name:'Deep Sleep Drone',  mood:'Sleep · Delta Waves',     filter:['all','sleep'],
+    prompt:'Very deep low frequency humming drone sound, slow sub-bass meditation tone, sleep inducing sound, continuous and very calming, no melody' },
+  { id:'crystal',   icon:'💎', name:'Crystal Bowls',     mood:'Healing · Clarity',       filter:['all','heal'],
+    prompt:'Crystal singing bowls ringing in clear high tones, bright healing frequencies, spiritual sound healing, continuous resonance and gentle ring' },
+];
+
+// ══════════════════════════════════════
+// SOUND ENGINE (ElevenLabs Sound Gen)
+// ══════════════════════════════════════
+class SoundEngine {
+  constructor() { this.audio = null; this.current = null; this.busy = false; this.vol = 0.85; this.cache = {}; }
+
+  async generate(sound) {
+    if (this.cache[sound.id]) return this.cache[sound.id];
+    const res = await fetch('https://api.elevenlabs.io/v1/sound-generation', {
+      method: 'POST',
+      headers: { 'xi-api-key': ELEVENLABS_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: sound.prompt, duration_seconds: 22, prompt_influence: 0.3 })
+    });
+    if (!res.ok) throw new Error('ElevenLabs sound-generation error: ' + res.status);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    this.cache[sound.id] = url;
+    return url;
+  }
+
+  async play(sound) {
+    if (this.busy) return;
+    // Toggle off if same sound already playing
+    if (this.current?.id === sound.id && this.audio && !this.audio.paused) { this.stop(); return; }
+    if (!USE_ELEVENLABS) { showToast('ElevenLabs key not found — check GitHub Secrets'); return; }
+
+    this.busy = true;
+    this._stopAudio();
+    this.current = sound;
+    _setSoundCard(sound.id, 'loading');
+    _showSoundBar(sound, 'Generating your soundscape with ElevenLabs...');
+
+    try {
+      const url = await this.generate(sound);
+      this.audio = new Audio(url);
+      this.audio.loop = true;
+      this.audio.volume = this.vol;
+      await this.audio.play();
+      _setSoundCard(sound.id, 'playing');
+      _updateSoundBarStatus('Now playing — looping seamlessly ✦');
+    } catch(e) {
+      console.error('[SoundEngine]', e);
+      _setSoundCard(null, 'idle');
+      _hideSoundBar();
+      this.current = null;
+      showToast('Could not generate sound — check ElevenLabs API key');
+    }
+    this.busy = false;
+  }
+
+  _stopAudio() {
+    if (this.audio) { try { this.audio.pause(); } catch(e){} this.audio = null; }
+  }
+
+  stop() {
+    const prev = this.current;
+    this._stopAudio();
+    this.current = null;
+    this.busy = false;
+    _setSoundCard(prev?.id, 'idle');
+    _hideSoundBar();
+  }
+
+  setVolume(v) {
+    this.vol = Math.max(0, Math.min(1, v));
+    if (this.audio) this.audio.volume = this.vol;
+  }
+}
+const SE = new SoundEngine();
+
+// ── Sound UI helpers ──
+function _setSoundCard(id, state) {
+  document.querySelectorAll('.sound-card').forEach(c => {
+    c.classList.remove('active', 'loading');
+    const s = c.querySelector('.sound-card-status');
+    if (s) s.textContent = 'Tap to play';
+    const w = c.querySelector('.sc-waves'); if (w) w.style.opacity = '0';
+  });
+  if (!id) return;
+  const card = document.getElementById('sc_' + id); if (!card) return;
+  if (state === 'loading') { card.classList.add('loading'); card.querySelector('.sound-card-status').textContent = 'Generating...'; }
+  else if (state === 'playing') {
+    card.classList.add('active');
+    card.querySelector('.sound-card-status').textContent = '▶ Playing';
+    const w = card.querySelector('.sc-waves'); if (w) w.style.opacity = '1';
+  }
+}
+
+function _showSoundBar(sound, status) {
+  const bar = document.getElementById('soundNowBar'); if (!bar) return;
+  document.getElementById('soundNowIcon').textContent = sound.icon;
+  document.getElementById('soundNowName').textContent = sound.name;
+  document.getElementById('soundNowStatus').textContent = status;
+  bar.classList.add('show');
+}
+function _updateSoundBarStatus(t) { const el = document.getElementById('soundNowStatus'); if (el) el.textContent = t; }
+function _hideSoundBar() {
+  const bar = document.getElementById('soundNowBar'); if (!bar) return;
+  bar.classList.remove('show');
+  setTimeout(() => { bar.style.display = 'none'; bar.style.display = ''; }, 10);
+}
+
+function filterSounds(btn) {
+  const f = btn.dataset.filter;
+  document.querySelectorAll('.sound-tab').forEach(t => t.classList.remove('active')); btn.classList.add('active');
+  document.querySelectorAll('.sound-card').forEach(card => {
+    const s = AMBIENT_SOUNDS.find(x => 'sc_' + x.id === card.id);
+    card.style.display = (!s || s.filter.includes(f)) ? '' : 'none';
+  });
+}
+
+function renderSoundGrid() {
+  const grid = document.getElementById('soundGrid'); if (!grid) return;
+  grid.innerHTML = AMBIENT_SOUNDS.map(s => `
+    <div class="sound-card glass reveal" id="sc_${s.id}" onclick="SE.play(AMBIENT_SOUNDS.find(x=>x.id==='${s.id}'))">
+      <span class="sound-card-icon">${s.icon}</span>
+      <div class="sound-card-name">${s.name}</div>
+      <div class="sound-card-mood">${s.mood}</div>
+      <div class="sound-card-status">Tap to play</div>
+      <div class="sc-waves"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>`).join('');
+}
 
 // ── AUDIO PROFILES ──
 const AUDIO_PROFILES = {
@@ -1218,10 +1313,14 @@ function stopSessionAudio(barId, vizId) {
 }
 
 // ── WIRE AUDIO INTO BREATHWORK ──
+const BREATH_SOUND_MAP = { '478':'rain', box:'stream', seal:'storm', energy:'crystal', sleep:'night' };
 const _origStartBreathing = startBreathing;
 startBreathing = async function() {
   _origStartBreathing();
   const profileKey = 'breath_' + currentPattern;
+  const soundId = BREATH_SOUND_MAP[currentPattern] || 'rain';
+  const sound = AMBIENT_SOUNDS.find(s => s.id === soundId);
+  if (sound) SE.play(sound);
   await startSessionAudio(profileKey, 'breathAudioBar', 'breathAudioViz', 'breathAudioName', 'breathAudioFreq', null, 0, 'var(--cyan)');
 };
 
@@ -1229,6 +1328,7 @@ const _origStopBreathing = stopBreathing;
 stopBreathing = function() {
   _origStopBreathing();
   stopSessionAudio('breathAudioBar', 'breathAudioViz');
+  SE.stop();
 };
 
 // ── WIRE BELL ON BREATH PHASE CHANGE ──
@@ -1245,12 +1345,20 @@ runBreathPhase = function() {
 };
 
 // ── WIRE AUDIO INTO MEDITATION PLAYER ──
+// Map meditation ID → best ambient sound
+const MED_SOUND_MAP = {
+  neural:'bowls', quantum:'crystal', ceo:'stream', heart:'rain', cosmic:'delta', detox:'wind'
+};
 const _origStartMedPlayback = startMedPlayback;
 startMedPlayback = async function() {
   _origStartMedPlayback();
   const profileKey = 'med_' + (currentMed?.id || '');
   const el = document.getElementById('elBadge');
   if (el) el.style.display = USE_ELEVENLABS ? 'block' : 'none';
+  // Start ambient ElevenLabs sound
+  const soundId = MED_SOUND_MAP[currentMed?.id] || 'bowls';
+  const sound = AMBIENT_SOUNDS.find(s => s.id === soundId);
+  if (sound) SE.play(sound);
   await startSessionAudio(profileKey, 'medAudioBar', 'medAudioViz', 'medAudioName', 'medAudioFreq', 'narrationText', 0, 'var(--cyan)');
 };
 
@@ -1258,6 +1366,7 @@ const _origStopMedPlayback = stopMedPlayback;
 stopMedPlayback = function(silent) {
   _origStopMedPlayback(silent);
   stopSessionAudio('medAudioBar', 'medAudioViz');
+  SE.stop();
   const nt = document.getElementById('narrationText'); if (nt) { nt.classList.remove('visible'); nt.textContent = ''; }
 };
 
@@ -1277,10 +1386,14 @@ setInterval(() => {
 }, 2000);
 
 // ── WIRE AUDIO INTO SLEEP PLAYER ──
+const SLEEP_SOUND_MAP = { deep:'delta', nap:'night', jetlag:'ocean', burnout:'rain' };
 const _origStartSleepPlayback = startSleepPlayback;
 startSleepPlayback = async function() {
   _origStartSleepPlayback();
   const profileKey = 'sleep_' + (currentSleep?.id || 'deep');
+  const soundId = SLEEP_SOUND_MAP[currentSleep?.id] || 'delta';
+  const sound = AMBIENT_SOUNDS.find(s => s.id === soundId);
+  if (sound) SE.play(sound);
   await startSessionAudio(profileKey, 'sleepAudioBar', 'sleepAudioViz', 'sleepAudioName', 'sleepAudioFreq', 'sleepNarrationText', 0, 'var(--purple)');
 };
 
@@ -1288,6 +1401,7 @@ const _origStopSleepPlayback = stopSleepPlayback;
 stopSleepPlayback = function(silent) {
   _origStopSleepPlayback(silent);
   stopSessionAudio('sleepAudioBar', 'sleepAudioViz');
+  SE.stop();
 };
 
 // ── ADD FREQUENCY BADGES TO MEDITATION CARDS ──
@@ -1371,6 +1485,7 @@ openMedPlayer = function(id) {
     currentUser = store.getSession();
   }
   updateNav(); renderMedGrid(); renderSleepGrid(); renderHistory(); updateStats();
+  renderSoundGrid();
   setTimeout(addAudioBadgesToMedCards, 150);
 })();
 </script>
