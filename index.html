@@ -1225,6 +1225,8 @@ function renderSoundGrid() {
       <div class="sound-card-status">Tap to play</div>
       <div class="sc-waves"><span></span><span></span><span></span><span></span><span></span></div>
     </div>`).join('');
+  const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } }); }, { threshold: .05 });
+  grid.querySelectorAll('.reveal').forEach(e => obs.observe(e));
 }
 
 // ── AUDIO PROFILES ──
@@ -1495,14 +1497,3 @@ openMedPlayer = function(id) {
       };
       else currentUser = null;
       updateNav(); renderHistory(); updateStats();
-    });
-  } else {
-    currentUser = store.getSession();
-  }
-  updateNav(); renderMedGrid(); renderSleepGrid(); renderHistory(); updateStats();
-  renderSoundGrid();
-  setTimeout(addAudioBadgesToMedCards, 150);
-})();
-</script>
-</body>
-</html>
