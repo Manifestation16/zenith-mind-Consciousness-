@@ -1498,6 +1498,15 @@ function handleUpgrade(tier) {
 // ══════════════════════════════════════
 const FREE_MEDITATIONS = ['neural', 'ceo'];
 
+async function fetchUserTier(userId) {
+  if (!USE_SUPABASE || !sb) return 'free';
+  try {
+    const { data, error } = await sb.from('profiles').select('tier').eq('id', userId).single();
+    if (error || !data) return 'free';
+    return data.tier || 'free';
+  } catch { return 'free'; }
+}
+
 function isPremium(contentId) {
   if (!currentUser) return false;
   if (currentUser.tier && currentUser.tier !== 'free') return true;
@@ -1520,18 +1529,23 @@ openMedPlayer = function(id) {
 (async function init() {
   if (USE_SUPABASE && sb) {
     const { data: { session } } = await sb.auth.getSession();
-    if (session?.user) currentUser = {
-      id: session.user.id,
-      email: session.user.email,
-      name: session.user.user_metadata?.name || session.user.email.split('@')[0]
-    };
-    sb.auth.onAuthStateChange((event, session) => {
-      if (session?.user) currentUser = {
+    if (session?.user) {
+      currentUser = {
         id: session.user.id,
         email: session.user.email,
-        name: session.user.user_metadata?.name || session.user.email.split('@')[0]
+        name: session.user.user_metadata?.name || session.user.email.split('@')[0],
+        tier: await fetchUserTier(session.user.id)
       };
-      else currentUser = null;
+    }
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        currentUser = {
+          id: session.user.id,
+          email: session.user.email,
+          name: session.user.user_metadata?.name || session.user.email.split('@')[0],
+          tier: await fetchUserTier(session.user.id)
+        };
+      } else currentUser = null;
       updateNav(); renderHistory(); updateStats();
     });
   } else {
