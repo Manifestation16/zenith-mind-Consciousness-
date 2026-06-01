@@ -1093,7 +1093,7 @@ const AMBIENT_SOUNDS = [
 // SOUND ENGINE (ElevenLabs Sound Gen)
 // ══════════════════════════════════════
 class SoundEngine {
-  constructor() { this.audio = null; this.current = null; this.busy = false; this.vol = 0.85; this.cache = {}; }
+  constructor() { this.source = null; this._gain = null; this.current = null; this.busy = false; this.vol = 0.85; this.cache = {}; this._playing = false; }
 
   async generate(sound) {
     if (this.cache[sound.id]) return this.cache[sound.id];
@@ -1102,7 +1102,7 @@ class SoundEngine {
       headers: { 'xi-api-key': ELEVENLABS_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: sound.prompt, duration_seconds: 22, prompt_influence: 0.7 })
     });
-    if (!res.ok) throw new Error('ElevenLabs sound-generation error: ' + res.status);
+    if (!res.ok) throw new Error('ElevenLabs error: ' + res.status);
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     this.cache[sound.id] = url;
@@ -1112,21 +1112,34 @@ class SoundEngine {
   async play(sound) {
     if (this.busy) return;
     // Toggle off if same sound already playing
-    if (this.current?.id === sound.id && this.audio && !this.audio.paused) { this.stop(); return; }
+    if (this.current?.id === sound.id && this._playing) { this.stop(); return; }
     if (!USE_ELEVENLABS) { showToast('ElevenLabs key not found — check GitHub Secrets'); return; }
 
     this.busy = true;
-    this._stopAudio();
+    this._stopSource();
     this.current = sound;
     _setSoundCard(sound.id, 'loading');
     _showSoundBar(sound, 'Generating your soundscape with ElevenLabs...');
 
     try {
+      await ZA.init(); // ensure AudioContext is unlocked
       const url = await this.generate(sound);
-      this.audio = new Audio(url);
-      this.audio.loop = true;
-      this.audio.volume = this.vol;
-      await this.audio.play();
+
+      // Use Web Audio API for seamless gap-free looping
+      const arrayBuf = await (await fetch(url)).arrayBuffer();
+      const audioBuf = await ZA.ctx.decodeAudioData(arrayBuf);
+
+      this._gain = ZA.ctx.createGain();
+      this._gain.gain.value = this.vol;
+      this._gain.connect(ZA.ctx.destination);
+
+      this.source = ZA.ctx.createBufferSource();
+      this.source.buffer = audioBuf;
+      this.source.loop = true;
+      this.source.connect(this._gain);
+      this.source.start(0);
+      this._playing = true;
+
       _setSoundCard(sound.id, 'playing');
       _updateSoundBarStatus('Now playing — looping seamlessly ✦');
     } catch(e) {
@@ -1139,13 +1152,15 @@ class SoundEngine {
     this.busy = false;
   }
 
-  _stopAudio() {
-    if (this.audio) { try { this.audio.pause(); } catch(e){} this.audio = null; }
+  _stopSource() {
+    if (this.source) { try { this.source.stop(); } catch(e){} this.source = null; }
+    if (this._gain) { try { this._gain.disconnect(); } catch(e){} this._gain = null; }
+    this._playing = false;
   }
 
   stop() {
     const prev = this.current;
-    this._stopAudio();
+    this._stopSource();
     this.current = null;
     this.busy = false;
     _setSoundCard(prev?.id, 'idle');
@@ -1154,7 +1169,7 @@ class SoundEngine {
 
   setVolume(v) {
     this.vol = Math.max(0, Math.min(1, v));
-    if (this.audio) this.audio.volume = this.vol;
+    if (this._gain) this._gain.gain.value = this.vol;
   }
 }
 const SE = new SoundEngine();
