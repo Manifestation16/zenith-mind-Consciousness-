@@ -28,7 +28,6 @@ jobs:
         run: |
           sed -i "s|YOUR_SUPABASE_URL|${{ secrets.SUPABASE_URL }}|g" index.html
           sed -i "s|YOUR_SUPABASE_ANON_KEY|${{ secrets.SUPABASE_ANON_KEY }}|g" index.html
-          sed -i "s|YOUR_ELEVENLABS_API_KEY|${{ secrets.ELEVENLABS_API_KEY }}|g" index.html
           sed -i "s|YOUR_STRIPE_TRANSCENDENCE_LINK|${{ secrets.STRIPE_TRANSCENDENCE_LINK }}|g" index.html
           sed -i "s|YOUR_STRIPE_ILLUMINATION_LINK|${{ secrets.STRIPE_ILLUMINATION_LINK }}|g" index.html
 

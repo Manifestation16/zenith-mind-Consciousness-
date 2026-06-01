@@ -586,6 +586,17 @@ const store = {
   clearExercises(id) { localStorage.setItem('zm_ex_' + id, '[]') }
 };
 
+// ── HTML ESCAPING (XSS prevention) ──
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 let currentUser = null;
 
 // ── PARTICLES ──
@@ -841,7 +852,7 @@ let medPlaying = false, medTimer = null, medStartTime = 0, medTotalDuration = 0,
 
 function renderMedGrid() {
   const grid = document.getElementById('medGrid');
-  grid.innerHTML = meditations.map((m, i) => `<div class="glass med-card glass-glow reveal reveal-delay-${Math.min(i + 1, 4)}" onclick="openMedPlayer('${m.id}')"><div class="med-card-bg"></div><div class="med-card-content"><span class="med-card-tag">${m.tag}</span><h3>${m.title}</h3><p>${m.desc}</p><div class="med-card-meta"><span class="med-card-time">${Math.floor(m.duration / 60)} min</span><div class="med-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div></div></div>`).join('');
+  grid.innerHTML = meditations.map((m, i) => `<div class="glass med-card glass-glow reveal reveal-delay-${Math.min(i + 1, 4)}" onclick="openMedPlayer('${escapeHtml(m.id)}')"><div class="med-card-bg"></div><div class="med-card-content"><span class="med-card-tag">${escapeHtml(m.tag)}</span><h3>${escapeHtml(m.title)}</h3><p>${escapeHtml(m.desc)}</p><div class="med-card-meta"><span class="med-card-time">${Math.floor(m.duration / 60)} min</span><div class="med-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div></div></div></div>`).join('');
   const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target) } }) }, { threshold: .15 });
   grid.querySelectorAll('.reveal').forEach(e => obs.observe(e));
 }
@@ -905,7 +916,7 @@ let sleepPlaying = false, sleepTimer = null, sleepStartTime = 0, sleepTotalDurat
 
 function renderSleepGrid() {
   const grid = document.getElementById('sleepGrid');
-  grid.innerHTML = sleepExercises.map((s, i) => `<div class="glass sleep-card reveal reveal-delay-${Math.min(i + 1, 3)}" onclick="openSleepPlayer('${s.id}')"><span class="sleep-icon">${s.icon}</span><h3>${s.title}</h3><p>${s.desc}</p><span class="sleep-tag">${s.tag}</span></div>`).join('');
+  grid.innerHTML = sleepExercises.map((s, i) => `<div class="glass sleep-card reveal reveal-delay-${Math.min(i + 1, 3)}" onclick="openSleepPlayer('${escapeHtml(s.id)}')"><span class="sleep-icon">${escapeHtml(s.icon)}</span><h3>${escapeHtml(s.title)}</h3><p>${escapeHtml(s.desc)}</p><span class="sleep-tag">${escapeHtml(s.tag)}</span></div>`).join('');
   const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target) } }) }, { threshold: .15 });
   grid.querySelectorAll('.reveal').forEach(e => obs.observe(e));
 }
@@ -963,11 +974,13 @@ async function renderHistory() {
   const exercises = await loadExercises();
   if (!exercises.length) { list.innerHTML = '<div class="history-empty">No exercises yet. Complete a session to begin.</div>'; return }
   list.innerHTML = exercises.slice(0, 50).map(ex => {
+    const safeType = escapeHtml(ex.type);
     const icon = ex.type === 'meditation' ? '🧘' : ex.type === 'breathwork' ? '🌬' : ex.type === 'sleep' ? '🌙' : '📝';
     const d = new Date(ex.created_at);
     const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' at ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
     const dur = Math.floor((ex.duration || 0) / 60) + 'm ' + (ex.duration || 0) % 60 + 's';
-    return `<div class="history-item glass"><span class="history-icon">${icon}</span><div class="history-info"><h4>${ex.name}</h4><span class="history-meta">${dateStr} &middot; ${dur}${ex.cycles ? ' &middot; ' + ex.cycles + ' cycles' : ''}</span></div><span class="history-badge ${ex.type}">${ex.type}</span></div>`;
+    const safeCycles = ex.cycles ? ' &middot; ' + Number(ex.cycles) + ' cycles' : '';
+    return `<div class="history-item glass"><span class="history-icon">${icon}</span><div class="history-info"><h4>${escapeHtml(ex.name)}</h4><span class="history-meta">${dateStr} &middot; ${dur}${safeCycles}</span></div><span class="history-badge ${safeType}">${safeType}</span></div>`;
   }).join('');
 }
 
@@ -1023,11 +1036,10 @@ function setMode(m, el) {
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._to); t._to = setTimeout(() => t.classList.remove('show'), 2800) }
 
 // ══════════════════════════════════════
-// ELEVENLABS CONFIG
+// ELEVENLABS CONFIG (key stored server-side in Supabase Edge Function secrets)
 // ══════════════════════════════════════
-const ELEVENLABS_API_KEY = 'YOUR_ELEVENLABS_API_KEY'; // ← Add your key here
-const ELEVENLABS_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL';  // "Sarah" — calm, meditative
-const USE_ELEVENLABS = ELEVENLABS_API_KEY.startsWith('sk_');
+const USE_ELEVENLABS = true;
+const ELEVENLABS_PROXY_URL = (USE_SUPABASE ? SUPABASE_URL : '') + '/functions/v1/elevenlabs-proxy';
 
 // ══════════════════════════════════════
 // ZENITH AUDIO (minimal — bell only)
@@ -1097,12 +1109,25 @@ class SoundEngine {
 
   async generate(sound) {
     if (this.cache[sound.id]) return this.cache[sound.id];
-    const res = await fetch('https://api.elevenlabs.io/v1/sound-generation', {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) throw new Error('Not authenticated');
+    const res = await fetch(ELEVENLABS_PROXY_URL, {
       method: 'POST',
-      headers: { 'xi-api-key': ELEVENLABS_API_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: sound.prompt, duration_seconds: 22, prompt_influence: 0.7 })
+      headers: {
+        'Authorization': 'Bearer ' + session.access_token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        endpoint: 'sound-generation',
+        text: sound.prompt,
+        duration_seconds: 22,
+        prompt_influence: 0.7
+      })
     });
-    if (!res.ok) throw new Error('ElevenLabs error: ' + res.status);
+    if (!res.ok) {
+      if (res.status === 429) throw new Error('Rate limit reached. Please wait.');
+      throw new Error('Sound generation failed: ' + res.status);
+    }
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     this.cache[sound.id] = url;
@@ -1113,7 +1138,8 @@ class SoundEngine {
     if (this.busy) return;
     // Toggle off if same sound already playing
     if (this.current?.id === sound.id && this._playing) { this.stop(); return; }
-    if (!USE_ELEVENLABS) { showToast('ElevenLabs key not found — check GitHub Secrets'); return; }
+    if (!requireAuth('use AI soundscapes')) return;
+    if (!USE_ELEVENLABS) { showToast('AI sound unavailable'); return; }
 
     this.busy = true;
     this._stopSource();
@@ -1147,7 +1173,9 @@ class SoundEngine {
       _setSoundCard(null, 'idle');
       _hideSoundBar();
       this.current = null;
-      showToast('Could not generate sound — check ElevenLabs API key');
+      if (e.message.includes('Rate limit')) showToast('Rate limit reached — please wait a moment');
+      else if (e.message.includes('Not authenticated')) showToast('Sign in to use AI soundscapes');
+      else showToast('Could not generate sound — please try again');
     }
     this.busy = false;
   }
@@ -1218,10 +1246,10 @@ function filterSounds(btn) {
 function renderSoundGrid() {
   const grid = document.getElementById('soundGrid'); if (!grid) return;
   grid.innerHTML = AMBIENT_SOUNDS.map(s => `
-    <div class="sound-card glass" id="sc_${s.id}" onclick="SE.play(AMBIENT_SOUNDS.find(x=>x.id==='${s.id}'))">
-      <span class="sound-card-icon">${s.icon}</span>
-      <div class="sound-card-name">${s.name}</div>
-      <div class="sound-card-mood">${s.mood}</div>
+    <div class="sound-card glass" id="sc_${escapeHtml(s.id)}" onclick="SE.play(AMBIENT_SOUNDS.find(x=>x.id==='${escapeHtml(s.id)}'))">
+      <span class="sound-card-icon">${escapeHtml(s.icon)}</span>
+      <div class="sound-card-name">${escapeHtml(s.name)}</div>
+      <div class="sound-card-mood">${escapeHtml(s.mood)}</div>
       <div class="sound-card-status">Tap to play</div>
       <div class="sc-waves"><span></span><span></span><span></span><span></span><span></span></div>
     </div>`).join('');
@@ -1259,16 +1287,26 @@ const AUDIO_PROFILES = {
     narration:["You have done enough. You are enough. Now rest. The world will wait. You cannot pour from an empty cup."] }
 };
 
-// ── ELEVENLABS NARRATION ──
+// ── ELEVENLABS NARRATION (via secure proxy) ──
 const narrationCache = {};
 async function getNarration(text) {
   if (narrationCache[text]) return narrationCache[text];
-  if (!USE_ELEVENLABS) return null;
+  if (!USE_ELEVENLABS || !USE_SUPABASE) return null;
   try {
-    const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}/stream`, {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return null;
+    const res = await fetch(ELEVENLABS_PROXY_URL, {
       method: 'POST',
-      headers: { 'xi-api-key': ELEVENLABS_API_KEY, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
-      body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.72, similarity_boost: 0.78, style: 0.15, use_speaker_boost: true } })
+      headers: {
+        'Authorization': 'Bearer ' + session.access_token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        endpoint: 'text-to-speech',
+        text: text,
+        model_id: 'eleven_multilingual_v2',
+        voice_settings: { stability: 0.72, similarity_boost: 0.78, style: 0.15, use_speaker_boost: true }
+      })
     });
     if (!res.ok) return null;
     const blob = await res.blob();
@@ -1506,4 +1544,3 @@ openMedPlayer = function(id) {
 </script>
 </body>
 </html>
-       
