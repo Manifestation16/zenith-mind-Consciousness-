@@ -1218,15 +1218,13 @@ function filterSounds(btn) {
 function renderSoundGrid() {
   const grid = document.getElementById('soundGrid'); if (!grid) return;
   grid.innerHTML = AMBIENT_SOUNDS.map(s => `
-    <div class="sound-card glass reveal" id="sc_${s.id}" onclick="SE.play(AMBIENT_SOUNDS.find(x=>x.id==='${s.id}'))">
+    <div class="sound-card glass" id="sc_${s.id}" onclick="SE.play(AMBIENT_SOUNDS.find(x=>x.id==='${s.id}'))">
       <span class="sound-card-icon">${s.icon}</span>
       <div class="sound-card-name">${s.name}</div>
       <div class="sound-card-mood">${s.mood}</div>
       <div class="sound-card-status">Tap to play</div>
       <div class="sc-waves"><span></span><span></span><span></span><span></span><span></span></div>
     </div>`).join('');
-  const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } }); }, { threshold: .05 });
-  grid.querySelectorAll('.reveal').forEach(e => obs.observe(e));
 }
 
 // ── AUDIO PROFILES ──
@@ -1497,3 +1495,15 @@ openMedPlayer = function(id) {
       };
       else currentUser = null;
       updateNav(); renderHistory(); updateStats();
+    });
+  } else {
+    currentUser = store.getSession();
+  }
+  updateNav(); renderMedGrid(); renderSleepGrid(); renderHistory(); updateStats();
+  renderSoundGrid();
+  setTimeout(addAudioBadgesToMedCards, 150);
+})();
+</script>
+</body>
+</html>
+       
