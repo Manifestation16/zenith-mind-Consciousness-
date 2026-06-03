@@ -1,8 +1,8 @@
 const CACHE_NAME = 'zenith-mind-v1';
 const ASSETS = [
-  '/zenith-mind/',
-  '/zenith-mind/index.html',
-  '/zenith-mind/manifest.json'
+  '/zenith-mind-Consciousness-/',
+  '/zenith-mind-Consciousness-/index.html',
+  '/zenith-mind-Consciousness-/manifest.json'
 ];
 
 self.addEventListener('install', event => {
